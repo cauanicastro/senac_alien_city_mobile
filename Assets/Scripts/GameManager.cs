@@ -14,7 +14,7 @@ public class GameManager
     [Header("Player props")]
     public GameObject player;
     public PlayerController playerController;
-    public Transform playerPos; 
+    public Transform playerPos;
     public float playerHealth = 100;
     public float playerMaxHealth = 100;
     public float playerLives = 3;
@@ -24,7 +24,7 @@ public class GameManager
 
     private static GameManager instance;
 
-    private GameManager() {}
+    private GameManager() { }
 
     public static GameManager GetInstance()
     {
@@ -43,6 +43,9 @@ public class GameManager
 
     public void DealDamage(float amount)
     {
+        #if UNITY_IPHONE || UNITY_ANDROID
+            Handheld.Vibrate();
+        #endif
         playerHealth = UpdateHealthbar(Max(playerHealth - amount, 0));
         if (playerHealth == 0)
         {
@@ -62,6 +65,9 @@ public class GameManager
 
     private void LifeDecrease()
     {
+        #if UNITY_IPHONE || UNITY_ANDROID
+            Handheld.Vibrate();
+        #endif
         --playerLives;
         //TODO: check if lives are under 0
         playerController.StartCoroutine(RestartScene());
